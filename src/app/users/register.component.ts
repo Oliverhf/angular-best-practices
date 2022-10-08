@@ -38,11 +38,17 @@ import { IUser } from '../users/user.model';
   
     registerUser(user: IUser) {
       this.saving=true;
+      this.saveAndRedirect(user);
+    }
+
+    private saveAndRedirect(user:IUser) {
       this.userRepository.saveUser(user)
-        .subscribe(
-          null,
-          ()=>this.saving=false,
-          () => this.router.navigate(['/catalog']));
+      this.userRepository.saveUser(user)
+      .subscribe({
+        complete:() => this.router.navigate(['/catalog']),
+        error: ()=>this.saving=false
+      });
+      
     }
   
     cancel() {
