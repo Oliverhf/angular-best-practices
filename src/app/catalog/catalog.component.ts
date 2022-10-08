@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { IClass } from './class.model'
+import { IClass } from './class.model';
 
 import { CatalogRepositoryService } from "./catalog-repository.service"
 import { UserRepositoryService } from "../core/user-repository.service"
@@ -25,6 +25,18 @@ export class CatalogComponent implements OnInit{
     this.catalogRepository.getCatalog()
       .subscribe(classes => { this.classes = classes; this.applyFilter('')});
   }
+
+  mutateFirstProfessor() {
+    this.visibleClasses[0].professor = "Zebraman";
+  }
+
+  updateFirstProfessor() {
+    this.visibleClasses = [
+      {...this.visibleClasses[0], professor: "Zebraman"},
+      ...this.visibleClasses.slice(1)
+    ]
+  }
+
   enroll(classToEnroll: IClass) {
     classToEnroll.processing = true;
     this.userRepository.enroll(classToEnroll.classId)
