@@ -2,20 +2,22 @@ import { Injectable } from '@angular/core';
 import { Observable, EMPTY, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import {IUser} from '../users/user.model';
+
 @Injectable()
 export class UserRepositoryService {
   currentUser:any;
 
   constructor() {}
 
-  saveUser(user): Observable<any> {
+  saveUser(user: IUser): Observable<any> {
    const classes = user.classes || [];
     this.currentUser = { ...user, classes: [...classes] };
 
     return EMPTY.pipe(delay(1000));
   }
 
-  enroll(classId): Observable<any> {
+  enroll(classId: string): Observable<any> {
     if (!this.currentUser)
       return throwError('User not signed in');
 
@@ -31,7 +33,7 @@ export class UserRepositoryService {
     return EMPTY.pipe(delay(1000));
   }
 
-  drop(classId): Observable<any> {
+  drop(classId: string): Observable<any> {
     if (!this.currentUser)
       return throwError('User not signed in');
 
@@ -41,13 +43,13 @@ export class UserRepositoryService {
     // this.currentUser.classes = this.currentUser.classes.filter(c => c.classId !== classId);
 
     this.currentUser.classes = {
-      ...this.currentUser, classes: this.currentUser.filter(c => c.classId !== classId)
+      ...this.currentUser, classes: this.currentUser.filter((c:string) => c !== classId)
     }
 
     return EMPTY.pipe(delay(1000));
   }
 
-  signIn(credentials): Observable<any> {
+  signIn(credentials: any): Observable<any> {
     //Never, ever check credentials in client-side code.
     //This code is only here to supply a fake endpoint for signing in.
     if (credentials.email !== 'me@whitebeards.edu' || credentials.password !== 'super-secret')

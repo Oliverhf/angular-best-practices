@@ -3,7 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router'
 
-import { UserRepositoryService } from '../services/user-repository.service'
+import { UserRepositoryService } from '../core/user-repository.service'
+import { IUser } from '../users/user.model';
 
 @Component({
     styleUrls: ['./register.component.css'],
@@ -17,10 +18,10 @@ import { UserRepositoryService } from '../services/user-repository.service'
     email: FormControl;
     password: FormControl;
     saving:boolean=false;
+
+    
   
-    constructor(private router:Router, private userRepository: UserRepositoryService) { }
-  
-    ngOnInit() {
+    constructor(private router:Router, private userRepository: UserRepositoryService) { 
       this.firstName = new FormControl('', Validators.required);
       this.lastName = new FormControl('', Validators.required);
       this.email = new FormControl('', Validators.required);
@@ -33,8 +34,9 @@ import { UserRepositoryService } from '../services/user-repository.service'
         password: this.password
       });
     }
+
   
-    registerUser(user) {
+    registerUser(user: IUser) {
       this.saving=true;
       this.userRepository.saveUser(user)
         .subscribe(
