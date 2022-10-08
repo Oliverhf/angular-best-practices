@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { IClass } from './class.model'
 
@@ -10,7 +10,7 @@ import { FilterClassesService } from './filter-classes.service';
   styleUrls: ['./catalog.component.css'],
   templateUrl: './catalog.component.html'
 })
-export class CatalogComponent {
+export class CatalogComponent implements OnInit{
   classes:IClass[] = [];
   visibleClasses:IClass[] = [];
 
@@ -20,11 +20,11 @@ export class CatalogComponent {
     private filterClassesService: FilterClassesService 
   ) {}
 
+ 
   ngOnInit() {
     this.catalogRepository.getCatalog()
       .subscribe(classes => { this.classes = classes; this.applyFilter('')});
   }
-
   enroll(classToEnroll: IClass) {
     classToEnroll.processing = true;
     this.userRepository.enroll(classToEnroll.classId)
